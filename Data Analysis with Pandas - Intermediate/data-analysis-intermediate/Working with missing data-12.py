@@ -15,9 +15,8 @@ print(titanic_survival["age"])
 age_null = pd.isnull(titanic_survival["age"])
 
 # age_null is a boolean vector, and has "True" where age is NaN, and "False" where it isn't
-null_true = age_null[age_null == True]
-age_null_count = len(null_true)
-print(type(null_true), type(age_null_count), age_null.sum(), len(age_null), len(null_true))
+age_null_true = age_null[age_null == True]
+age_null_count = len(age_null_true)
 
 ## 3. Whats the big deal with missing data? ##
 
@@ -30,9 +29,8 @@ print(mean_age)
 
 # What we have to do instead is filter the missing values out before we compute the mean.
 age_null = pd.isnull(titanic_survival["age"])
-age_not_null = pd.notnull(titanic_survival['age'])
-filtered_age = titanic_survival['age'].loc[age_not_null]
-correct_mean_age = filtered_age.sum() / filtered_age.count()
+good_ages = titanic_survival["age"][age_null == False]
+correct_mean_age = sum(good_ages) / len(good_ages)
 
 ## 4. Easier ways to do math ##
 
@@ -41,26 +39,21 @@ import pandas as pd
 # This is the same value that we computed in the last screen, but it's much simpler.
 # The ease of using the .mean() method is great, but it's important to understand how the underlying data looks.
 correct_mean_age = titanic_survival["age"].mean()
-correct_mean_fare = titanic_survival['fare'].mean()
+correct_mean_fare = titanic_survival["fare"].mean()
 
 ## 5. Computing summary statistics ##
 
-# Passengers are divided into classes based on the "pclass" column
-# Passengers can be in first class (1), second class (2), or third class (3)
-# Let's compute the average fare for each class
 passenger_classes = [1, 2, 3]
 fares_by_class = {}
+fares_by_class = {}
 for pclass in passenger_classes:
-    fare_for_class = None
-    # Insert code here to compute the average fare for pclass
-    filtered = titanic_survival.loc[titanic_survival['pclass'] == pclass]
-    fare_for_class = filtered['fare'].mean()
-    # Assign the result to fare_for_class
+    pclass_rows = titanic_survival[titanic_survival["pclass"] == pclass]
+    pclass_fares = pclass_rows["fare"]
+    fare_for_class = pclass_fares.mean()
     fares_by_class[pclass] = fare_for_class
 
 ## 6. Making pivot tables ##
 
-import pandas as pd
 import numpy as np
 
 # Let's compute the survival change from 0-1 for people in each class
@@ -75,7 +68,7 @@ passenger_survival = titanic_survival.pivot_table(index="pclass", values="surviv
 
 # First class passengers had a much higher survival chance
 print(passenger_survival)
-passenger_age = titanic_survival.pivot_table(index="pclass", values='age', aggfunc=np.mean)
+passenger_age = titanic_survival.pivot_table(index="pclass", values="age", aggfunc=np.mean)
 
 ## 7. More complex pivot tables ##
 
@@ -84,8 +77,7 @@ import numpy as np
 # This will compute the mean survival chance and the mean age for each passenger class
 passenger_survival = titanic_survival.pivot_table(index="pclass", values=["age", "survived"], aggfunc=np.mean)
 print(passenger_survival)
-
-port_stats = titanic_survival.pivot_table(index='embarked', values=['age', 'survived', 'fare'], aggfunc=np.mean)
+port_stats = titanic_survival.pivot_table(index="embarked", values=["age", "survived", "fare"], aggfunc=np.mean)
 
 ## 8. Drop missing values ##
 
@@ -105,9 +97,7 @@ print(new_titanic_survival)
 # We can use the subset argument to only drop rows if certain columns have missing values.
 # This drops all rows where "age" or "sex" is missing.
 new_titanic_survival = titanic_survival.dropna(subset=["age", "sex"])
-print(new_titanic_survival)
-
-new_titanic_survival = titanic_survival.dropna(subset=['age', 'body', 'home.dest'])
+new_titanic_survival = titanic_survival.dropna(subset=["age", "body", "home.dest"])
 
 ## 9. Row indices ##
 
@@ -129,12 +119,11 @@ print(new_titanic_survival.iloc[:5,:])
 # .iloc works by position (row/column number)
 
 # This code prints the fourth row in the data
-print(new_titanic_survival.iloc[4,:])
+print(new_titanic_survival.iloc[3,:])
 
 # Using .loc instead addresses rows and columns by index, not position
 # This actually prints the first row, because it has index 3
 print(new_titanic_survival.loc[3,:])
-
 row_index_25 = new_titanic_survival.loc[25,:]
 row_position_fifth = new_titanic_survival.iloc[4,:]
 
@@ -148,9 +137,8 @@ print(new_titanic_survival.iloc[0,0])
 # This prints the exact same value -- it prints the value at row index 3 and column "pclass"
 # This happens to also be at row 0, index 0
 print(new_titanic_survival.loc[3,"pclass"])
-
-row_1100_age = new_titanic_survival.loc[1100,'age']
-row_25_survived = new_titanic_survival.loc[25,'survived']
+row_1100_age = new_titanic_survival.loc[1100, "age"]
+row_25_survived = new_titanic_survival.loc[25, "survived"]
 
 ## 11. Reindex rows ##
 
@@ -165,8 +153,8 @@ print(new_titanic_survival)
 new_titanic_survival = new_titanic_survival.reset_index(drop=True)
 # Now we have indexes starting from 0!
 print(new_titanic_survival)
-
-titanic_reindexed = titanic_survival.dropna(subset=['age','boat']).reset_index(drop=True)
+new_titanic_survival = titanic_survival.dropna(subset=["age", "boat"])
+titanic_reindexed = new_titanic_survival.reset_index(drop=True)
 
 ## 12. Use the apply function ##
 
@@ -185,13 +173,12 @@ def null_count(column):
 # Compute null counts for each column
 column_null_count = titanic_survival.apply(null_count)
 print(column_null_count)
-
 def not_null_count(column):
-    column_not_null = pd.notnull(column)
-    not_null = column[column_not_null == True]
-    return(len(not_null))
+    column_null = pd.isnull(column)
+    null = column[column_null == False]
+    return len(null)
+
 column_not_null_count = titanic_survival.apply(not_null_count)
-print(column_not_null_count)
 
 ## 13. Applying a function to a row ##
 
@@ -206,20 +193,21 @@ def is_minor(row):
 # Each entry is True if the row at the same position is a record for a minor
 # The axis of 1 specifies that it will iterate over rows, not columns
 minors = titanic_survival.apply(is_minor, axis=1)
+import pandas as pd
 
-def age_label(row):
-    if pd.isnull(row['age']):
-        return('unknown')
+def generate_age_label(row):
+    age = row["age"]
+    if pd.isnull(age):
+        return "unknown"
+    elif age < 18:
+        return "minor"
     else:
-        if row['age'] < 18:
-            return('minor')
-        else:
-            return('adult')
-age_labels = titanic_survival.apply(age_label, axis=1)
-print(age_labels)
+        return "adult"
+
+age_labels = titanic_survival.apply(generate_age_label, axis=1)
 
 ## 14. Computing survival percentage by age group ##
 
 # The titanic_survival variable now has the added column "age_labels", which is our age labels series from the last screen.
-age_group_survival = titanic_survival.pivot_table(index='age_labels', values=['survived'], aggfunc=np.mean)
-print(age_group_survival)
+import numpy as np
+age_group_survival = titanic_survival.pivot_table(index="age_labels", values=["survived"], aggfunc=np.mean)
