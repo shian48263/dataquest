@@ -6,3 +6,4 @@ Bookmarks:
 - https://www.khanacademy.org/mission/probability
 - https://www.udacity.com/course/model-building-and-validation--ud919
 - http://data.g0v.tw
+－ http://haseebq.com/how-to-break-into-tech-job-hunting-and-interviews/?utm_content=bufferc78f3&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer
