@@ -1,4 +1,11 @@
 Bookmarks:
+- https://www.quora.com/What-are-the-best-data-science-MOOCs
+- http://datasciencemasters.org
+- https://www.kaggle.com/wiki/Tutorials
+- https://www.springboard.com/learning-paths/data-analysis
+- https://class.coursera.org/datasci-002
+- https://www.coursera.org/learn/machine-learning
+- http://bigdatauniversity.com
 - https://www.dataquest.io/blog/
 - http://pandas.pydata.org/pandas-docs/stable/cookbook.html
 - https://www.hackerrank.com/domains/ai
@@ -6,4 +13,4 @@ Bookmarks:
 - https://www.khanacademy.org/mission/probability
 - https://www.udacity.com/course/model-building-and-validation--ud919
 - http://data.g0v.tw
-－ http://haseebq.com/how-to-break-into-tech-job-hunting-and-interviews/?utm_content=bufferc78f3&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer
+- http://haseebq.com/how-to-break-into-tech-job-hunting-and-interviews/?utm_content=bufferc78f3&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer
